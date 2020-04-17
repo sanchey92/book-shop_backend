@@ -1,0 +1,30 @@
+[
+  {
+    "id": "1",
+    "title": "Eloquent JavaScript",
+    "imgUrl": "https://media.proglib.io/wp-uploads/2017/05/cover.png",
+    "price": "25",
+    "description": "this is amazing book about js"
+  },
+  {
+    "id": "2",
+    "title": "Learning JavaScript",
+    "imgUrl": "https://covers.oreillystatic.com/images/0636920035534/lrg.jpg",
+    "price": "27",
+    "description": "this is legendary book about js"
+  },
+  {
+    "id": "3",
+    "title": "Web Development",
+    "imgUrl": "https://images-na.ssl-images-amazon.com/images/I/51IgZ-mtGsL.jpg",
+    "price": "57",
+    "description": "this is a good book for learning Node JS"
+  },
+  {
+    "id": "0.9334583919975288",
+    "title": "Learning React",
+    "imgUrl": "https://covers.oreillystatic.com/images/0636920049579/lrg.jpg",
+    "price": "22",
+    "description": "This is book about React"
+  }
+]
