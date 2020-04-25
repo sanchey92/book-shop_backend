@@ -5,7 +5,7 @@ export interface IProduct {
   id: string | null,
   title: string,
   imgUrl: string,
-  price: string,
+  price: number,
   description: string
 }
 
@@ -33,7 +33,7 @@ export default class Product implements IProduct {
   constructor(public id: string | null,
               public  title: string,
               public imgUrl: string,
-              public price: string,
+              public price: number,
               public description: string) {
   }
 
@@ -61,5 +61,11 @@ export default class Product implements IProduct {
           saveProductInFile(product)
         }
       })
+  }
+
+  static async deleteById(id: string) {
+    const products = await getProductsFromFile();
+    const updateProducts = products.filter(el => el.id !== id);
+    await saveProductInFile(updateProducts)
   }
 }

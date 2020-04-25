@@ -120,6 +120,23 @@ var Product = /** @class */ (function () {
             }
         });
     };
+    Product.deleteById = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            var products, updateProducts;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, getProductsFromFile()];
+                    case 1:
+                        products = _a.sent();
+                        updateProducts = products.filter(function (el) { return el.id !== id; });
+                        return [4 /*yield*/, saveProductInFile(updateProducts)];
+                    case 2:
+                        _a.sent();
+                        return [2 /*return*/];
+                }
+            });
+        });
+    };
     return Product;
 }());
 exports.default = Product;

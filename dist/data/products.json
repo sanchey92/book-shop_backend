@@ -1,12 +1,5 @@
 [
   {
-    "id": "1",
-    "title": "Eloquent JavaScript",
-    "imgUrl": "https://media.proglib.io/wp-uploads/2017/05/cover.png",
-    "price": "25",
-    "description": "this is amazing book about js"
-  },
-  {
     "id": "2",
     "title": "Learning JavaScript",
     "imgUrl": "https://covers.oreillystatic.com/images/0636920035534/lrg.jpg",
@@ -26,5 +19,12 @@
     "imgUrl": "https://covers.oreillystatic.com/images/0636920049579/lrg.jpg",
     "price": "22",
     "description": "This is book about React"
+  },
+  {
+    "id": "0.2132041927419832",
+    "title": "Node + Express",
+    "imgUrl": "https://images-na.ssl-images-amazon.com/images/I/51MFfESp-KL._SX384_BO1,204,203,200_.jpg",
+    "price": "24",
+    "description": "This is a amazing book about backend development"
   }
 ]

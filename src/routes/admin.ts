@@ -1,8 +1,10 @@
 import {Router} from "express";
-import {postAddProduct} from '../controllers/admin'
+import {deleteProductById, postAddProduct} from '../controllers/admin'
 
 const router = Router();
 
-router.post('/add-product', postAddProduct)
+router.post('/add-product', postAddProduct);
+
+router.delete('/delete-product/:id', deleteProductById)
 
 export default router
