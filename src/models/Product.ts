@@ -7,6 +7,7 @@ export interface IProduct {
   imgUrl: string,
   price: number,
   description: string
+  quantity?: number
 }
 
 const mainPath = path.join(__dirname, '..', 'data', 'products.json');

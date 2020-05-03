@@ -5,4 +5,6 @@ var shop_1 = require("../controllers/shop");
 var router = express_1.Router();
 router.get('/products', shop_1.getProducts);
 router.get('/products/:id', shop_1.getProductById);
+router.get('/cart', shop_1.getCart);
+router.post('/cart', shop_1.postCart);
 exports.default = router;

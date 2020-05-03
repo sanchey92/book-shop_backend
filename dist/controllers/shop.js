@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Product_1 = __importDefault(require("../models/Product"));
+var Cart_1 = __importDefault(require("../models/Cart"));
 exports.getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var products;
     return __generator(this, function (_a) {
@@ -62,6 +63,35 @@ exports.getProductById = function (req, res) { return __awaiter(void 0, void 0, 
             case 1:
                 product = _a.sent();
                 res.status(200).json({ product: product });
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.getCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var cart;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, Cart_1.default.getCart()];
+            case 1:
+                cart = _a.sent();
+                res.status(200).json({ cart: cart });
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.postCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var prodId, product;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                prodId = req.body.id;
+                return [4 /*yield*/, Product_1.default.fetchById(prodId)];
+            case 1:
+                product = _a.sent();
+                return [4 /*yield*/, Cart_1.default.addToCart(prodId, product.price)];
+            case 2:
+                _a.sent();
+                res.status(200).json({ message: 'done' });
                 return [2 /*return*/];
         }
     });
