@@ -68,13 +68,27 @@ exports.getProductById = function (req, res) { return __awaiter(void 0, void 0, 
     });
 }); };
 exports.getCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var cart;
+    var cart, products, cartProducts, _loop_1, _i, products_1, product;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0: return [4 /*yield*/, Cart_1.default.getCart()];
             case 1:
                 cart = _a.sent();
-                res.status(200).json({ cart: cart });
+                return [4 /*yield*/, Product_1.default.fetchAll()];
+            case 2:
+                products = _a.sent();
+                cartProducts = [];
+                _loop_1 = function (product) {
+                    var cartProductData = cart.products.find(function (el) { return el.id === product.id; });
+                    if (cartProductData) {
+                        cartProducts.push({ productData: product, quantity: cartProductData.quantity });
+                    }
+                };
+                for (_i = 0, products_1 = products; _i < products_1.length; _i++) {
+                    product = products_1[_i];
+                    _loop_1(product);
+                }
+                res.status(200).json({ cartProducts: cartProducts, totalPrice: cart.totalPrice });
                 return [2 /*return*/];
         }
     });
@@ -92,6 +106,23 @@ exports.postCart = function (req, res) { return __awaiter(void 0, void 0, void 0
             case 2:
                 _a.sent();
                 res.status(200).json({ message: 'done' });
+                return [2 /*return*/];
+        }
+    });
+}); };
+exports.postCartDeleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var prodId, product;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                prodId = req.body.id;
+                return [4 /*yield*/, Product_1.default.fetchById(prodId)];
+            case 1:
+                product = _a.sent();
+                return [4 /*yield*/, Cart_1.default.deleteFromCart(prodId, product.price)];
+            case 2:
+                _a.sent();
+                res.status(200).json({ message: 'done!' });
                 return [2 /*return*/];
         }
     });

@@ -64,6 +64,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var fs = __importStar(require("fs"));
 var path = __importStar(require("path"));
 var mainPath = path.join(__dirname, '..', 'data', 'cart.json');
+var saveFile = function (data) {
+    fs.writeFile(mainPath, JSON.stringify(data), function (error) {
+        console.log(error);
+    });
+};
 var Cart = /** @class */ (function () {
     function Cart() {
     }
@@ -101,9 +106,26 @@ var Cart = /** @class */ (function () {
                         cart.products = __spreadArrays(cart.products, [updatedProduct]);
                     }
                     cart.totalPrice += +productPrice;
-                    fs.writeFile(mainPath, JSON.stringify(cart), function (error) {
-                        console.log(error);
-                    });
+                    saveFile(cart);
+                    return [2 /*return*/];
+            }
+        });
+    }); };
+    Cart.deleteFromCart = function (id, productPrice) { return __awaiter(void 0, void 0, void 0, function () {
+        var cart, updatedCart, product, productQuantity;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, Cart.getCart()];
+                case 1:
+                    cart = _a.sent();
+                    updatedCart = __assign({}, cart);
+                    product = updatedCart.products.find(function (el) { return el.id === id; });
+                    if (!product)
+                        return [2 /*return*/];
+                    productQuantity = product.quantity;
+                    updatedCart.products = updatedCart.products.filter(function (el) { return el.id !== id; });
+                    updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQuantity;
+                    saveFile(updatedCart);
                     return [2 /*return*/];
             }
         });

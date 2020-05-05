@@ -2,7 +2,13 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 
-const mainPath = path.join(__dirname, '..', 'data', 'cart.json')
+const mainPath = path.join(__dirname, '..', 'data', 'cart.json');
+
+const saveFile = (data:ICart) => {
+  fs.writeFile(mainPath, JSON.stringify(data), (error) => {
+    console.log(error)
+  })
+}
 
 interface ICartProduct {
   id: string,
@@ -29,7 +35,6 @@ export default class Cart {
   }
 
   static addToCart = async (id: string, productPrice: number) => {
-
     const cart = await Cart.getCart();
     const idx = cart.products.findIndex(el => el.id === id);
     const existingProduct = cart.products[idx]
@@ -47,10 +52,20 @@ export default class Cart {
     }
 
     cart.totalPrice += +productPrice
-
-    fs.writeFile(mainPath, JSON.stringify(cart), (error) => {
-      console.log(error)
-    })
+    saveFile(cart)
   }
 
+  static deleteFromCart = async (id: string, productPrice: number) => {
+    const cart = await Cart.getCart();
+    const updatedCart = {...cart};
+
+    const product = updatedCart.products.find(el => el.id === id);
+    if (!product) return ;
+
+    const productQuantity = product.quantity;
+    updatedCart.products = updatedCart.products.filter(el => el.id !== id);
+
+    updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQuantity;
+    saveFile(updatedCart)
+  }
 }

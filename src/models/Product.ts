@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import * as path from 'path';
+import Cart from "./Cart";
 
 export interface IProduct {
   id: string | null,
@@ -66,6 +67,8 @@ export default class Product implements IProduct {
 
   static async deleteById(id: string) {
     const products = await getProductsFromFile();
+    const product = products.find(el => el.id === id);
+    if (product) await Cart.deleteFromCart(id, product.price);
     const updateProducts = products.filter(el => el.id !== id);
     await saveProductInFile(updateProducts)
   }
