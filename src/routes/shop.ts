@@ -6,9 +6,8 @@ const router = Router();
 router.get('/products', getProducts);
 router.get('/products/:id', getProductById);
 router.get('/cart', getCart);
-
-router.post('/cart', postCart);
-router.post('/cart/delete-product', postCartDeleteProduct)
+router.get('/cart/:id', postCart);
+router.post('/cart/remove-product', postCartDeleteProduct)
 
 export default router
 

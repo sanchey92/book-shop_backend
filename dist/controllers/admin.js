@@ -56,7 +56,7 @@ exports.postAddProduct = function (req, res) { return __awaiter(void 0, void 0, 
     });
 }); };
 exports.deleteProductById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var prodId;
+    var prodId, products;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
@@ -64,7 +64,10 @@ exports.deleteProductById = function (req, res) { return __awaiter(void 0, void 
                 return [4 /*yield*/, Product_1.default.deleteById(prodId)];
             case 1:
                 _a.sent();
-                res.status(200).json({ message: 'delete!' });
+                return [4 /*yield*/, Product_1.default.fetchAll()];
+            case 2:
+                products = _a.sent();
+                res.status(200).json({ products: products });
                 return [2 /*return*/];
         }
     });

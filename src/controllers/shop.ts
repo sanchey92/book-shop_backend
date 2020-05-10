@@ -1,6 +1,7 @@
 import Product, {IProduct} from "../models/Product";
 import {RequestHandler} from 'express';
 import Cart from "../models/Cart";
+import { getCartProducts } from "../utils/controllers.utils";
 
 type ID = {
   id: string
@@ -18,28 +19,21 @@ export const getProductById: RequestHandler<ID> = async (req, res) => {
 }
 
 export const getCart: RequestHandler = async (req, res) => {
-  const cart = await Cart.getCart()
-  const products = await Product.fetchAll();
-  const cartProducts = [];
-  for (let product of products) {
-    const cartProductData = cart.products.find(el => el.id === product.id)
-    if (cartProductData) {
-      cartProducts.push({productData: product, quantity: cartProductData.quantity})
-    }
-  }
-  res.status(200).json({cartProducts: cartProducts, totalPrice: cart.totalPrice});
+  const cartProducts = await getCartProducts()
+  res.status(200).json({cartProducts});
 }
 
 export const postCart: RequestHandler<ID> = async (req, res) => {
-  const prodId = req.body.id
-  const product = await Product.fetchById(prodId)
-  await Cart.addToCart(prodId, product.price)
-  res.status(200).json({message: 'done'})
+  const product = await Product.fetchById(req.params.id)
+  await Cart.addToCart(req.params.id, product.price)
+  const cartProducts = await getCartProducts()
+  res.status(200).json({cartProducts})
 }
 
 export const postCartDeleteProduct: RequestHandler<ID> = async (req, res) => {
-  const prodId = req.body.id;
-  const product = await Product.fetchById(prodId);
-  await Cart.deleteFromCart(prodId, product.price);
-  res.status(200).json({message: 'done!'})
+  const id = req.body.id;
+  const product = await Product.fetchById(id);
+  await Cart.deleteFromCart(id, product.price);
+  const cartProducts = await getCartProducts();
+  res.json({cartProducts})
 }

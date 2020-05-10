@@ -49,13 +49,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     result["default"] = mod;
     return result;
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 var fs = __importStar(require("fs"));
 var path = __importStar(require("path"));
-var Cart_1 = __importDefault(require("./Cart"));
 var mainPath = path.join(__dirname, '..', 'data', 'products.json');
 var getProductsFromFile = function () {
     return new Promise(function (resolve, reject) {
@@ -126,22 +122,15 @@ var Product = /** @class */ (function () {
     };
     Product.deleteById = function (id) {
         return __awaiter(this, void 0, void 0, function () {
-            var products, product, updateProducts;
+            var products, updateProducts;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4 /*yield*/, getProductsFromFile()];
                     case 1:
                         products = _a.sent();
-                        product = products.find(function (el) { return el.id === id; });
-                        if (!product) return [3 /*break*/, 3];
-                        return [4 /*yield*/, Cart_1.default.deleteFromCart(id, product.price)];
-                    case 2:
-                        _a.sent();
-                        _a.label = 3;
-                    case 3:
                         updateProducts = products.filter(function (el) { return el.id !== id; });
                         return [4 /*yield*/, saveProductInFile(updateProducts)];
-                    case 4:
+                    case 2:
                         _a.sent();
                         return [2 /*return*/];
                 }

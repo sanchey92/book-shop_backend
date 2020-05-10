@@ -57,15 +57,17 @@ export default class Cart {
 
   static deleteFromCart = async (id: string, productPrice: number) => {
     const cart = await Cart.getCart();
-    const updatedCart = {...cart};
+    const updatedCart = {...cart}
+    const idx = cart.products.findIndex(el => el.id === id);
 
-    const product = updatedCart.products.find(el => el.id === id);
-    if (!product) return ;
+    const updatedProduct = cart.products[idx];
 
-    const productQuantity = product.quantity;
-    updatedCart.products = updatedCart.products.filter(el => el.id !== id);
-
-    updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQuantity;
+    if (updatedProduct.quantity === 1) {
+      updatedCart.products = updatedCart.products.filter(el => el.id !== id);
+    } else {
+      updatedProduct.quantity--
+    }
+    updatedCart.totalPrice = updatedCart.totalPrice - productPrice
     saveFile(updatedCart)
   }
 }

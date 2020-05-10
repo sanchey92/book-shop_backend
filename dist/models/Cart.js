@@ -112,19 +112,22 @@ var Cart = /** @class */ (function () {
         });
     }); };
     Cart.deleteFromCart = function (id, productPrice) { return __awaiter(void 0, void 0, void 0, function () {
-        var cart, updatedCart, product, productQuantity;
+        var cart, updatedCart, idx, updatedProduct;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, Cart.getCart()];
                 case 1:
                     cart = _a.sent();
                     updatedCart = __assign({}, cart);
-                    product = updatedCart.products.find(function (el) { return el.id === id; });
-                    if (!product)
-                        return [2 /*return*/];
-                    productQuantity = product.quantity;
-                    updatedCart.products = updatedCart.products.filter(function (el) { return el.id !== id; });
-                    updatedCart.totalPrice = updatedCart.totalPrice - productPrice * productQuantity;
+                    idx = cart.products.findIndex(function (el) { return el.id === id; });
+                    updatedProduct = cart.products[idx];
+                    if (updatedProduct.quantity === 1) {
+                        updatedCart.products = updatedCart.products.filter(function (el) { return el.id !== id; });
+                    }
+                    else {
+                        updatedProduct.quantity--;
+                    }
+                    updatedCart.totalPrice = updatedCart.totalPrice - productPrice;
                     saveFile(updatedCart);
                     return [2 /*return*/];
             }
