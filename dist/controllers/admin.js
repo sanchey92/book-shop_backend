@@ -41,34 +41,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Product_1 = __importDefault(require("../models/Product"));
 exports.postAddProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, title, imgUrl, price, description, product;
+    var _a, title, imgUrl, price, description, product, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, title = _a.title, imgUrl = _a.imgUrl, price = _a.price, description = _a.description;
-                return [4 /*yield*/, new Product_1.default(null, title, imgUrl, price, description)];
+                product = new Product_1.default({ title: title, imgUrl: imgUrl, price: price, description: description });
+                _b.label = 1;
             case 1:
-                product = _b.sent();
-                product.save();
-                res.status(200).json({ message: 'done!' });
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.deleteProductById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var prodId, products;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                prodId = req.params.id;
-                return [4 /*yield*/, Product_1.default.deleteById(prodId)];
-            case 1:
-                _a.sent();
-                return [4 /*yield*/, Product_1.default.fetchAll()];
+                _b.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, product.save()];
             case 2:
-                products = _a.sent();
-                res.status(200).json({ products: products });
-                return [2 /*return*/];
+                _b.sent();
+                res.status(200).json({ message: 'done!' });
+                return [3 /*break*/, 4];
+            case 3:
+                err_1 = _b.sent();
+                console.log(err_1);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
+// export const deleteProductById: RequestHandler = async (req, res) => {
+//   const prodId = req.params.id;
+//   await Product.deleteById(prodId);
+//   const products: IProduct[] = await Product.fetchAll();
+//   res.status(200).json({products})
+// }

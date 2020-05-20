@@ -1,4 +1,5 @@
 import express, {Request, Response, NextFunction} from 'express';
+import {connect} from 'mongoose';
 import {json} from 'body-parser';
 import shopRoutes from './routes/shop';
 import adminRoutes from './routes/admin';
@@ -21,7 +22,15 @@ app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({message: error.message})
 })
 
-app.listen(3001, () => {
-  console.log('server started!')
-});
+const start = async () => {
+  try {
+    const URL = 'mongodb+srv://Alex:Liverpool1892@cluster0-pu5lh.mongodb.net/shop?retryWrites=true&w=majority'
+    await connect(URL, {useNewUrlParser: true});
+    app.listen(3001);
+  } catch (error) {
+    throw new Error(error);
+  }
+};
+
+start();
 

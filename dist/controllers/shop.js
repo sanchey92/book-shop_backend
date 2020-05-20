@@ -40,13 +40,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Product_1 = __importDefault(require("../models/Product"));
-var Cart_1 = __importDefault(require("../models/Cart"));
-var controllers_utils_1 = require("../utils/controllers.utils");
 exports.getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var products;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Product_1.default.fetchAll()];
+            case 0: return [4 /*yield*/, Product_1.default.find()];
             case 1:
                 products = _a.sent();
                 res.status(200).json({ products: products });
@@ -54,67 +52,28 @@ exports.getProducts = function (req, res) { return __awaiter(void 0, void 0, voi
         }
     });
 }); };
-exports.getProductById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, product;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = req.params.id;
-                return [4 /*yield*/, Product_1.default.fetchById(id)];
-            case 1:
-                product = _a.sent();
-                res.status(200).json({ product: product });
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.getCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var cartProducts;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, controllers_utils_1.getCartProducts()];
-            case 1:
-                cartProducts = _a.sent();
-                res.status(200).json({ cartProducts: cartProducts });
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.postCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, cartProducts;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0: return [4 /*yield*/, Product_1.default.fetchById(req.params.id)];
-            case 1:
-                product = _a.sent();
-                return [4 /*yield*/, Cart_1.default.addToCart(req.params.id, product.price)];
-            case 2:
-                _a.sent();
-                return [4 /*yield*/, controllers_utils_1.getCartProducts()];
-            case 3:
-                cartProducts = _a.sent();
-                res.status(200).json({ cartProducts: cartProducts });
-                return [2 /*return*/];
-        }
-    });
-}); };
-exports.postCartDeleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var id, product, cartProducts;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                id = req.body.id;
-                return [4 /*yield*/, Product_1.default.fetchById(id)];
-            case 1:
-                product = _a.sent();
-                return [4 /*yield*/, Cart_1.default.deleteFromCart(id, product.price)];
-            case 2:
-                _a.sent();
-                return [4 /*yield*/, controllers_utils_1.getCartProducts()];
-            case 3:
-                cartProducts = _a.sent();
-                res.json({ cartProducts: cartProducts });
-                return [2 /*return*/];
-        }
-    });
-}); };
+// export const getProductById: RequestHandler<ID> = async (req, res) => {
+//   const id = req.params.id;
+//   const product = await Product.fetchById(id);
+//   res.status(200).json({product: product});
+// }
+//
+// export const getCart: RequestHandler = async (req, res) => {
+//   const cartProducts = await getCartProducts()
+//   res.status(200).json({cartProducts});
+// }
+//
+// export const postCart: RequestHandler<ID> = async (req, res) => {
+//   const product = await Product.fetchById(req.params.id)
+//   await Cart.addToCart(req.params.id, product.price)
+//   const cartProducts = await getCartProducts()
+//   res.status(200).json({cartProducts})
+// }
+//
+// export const postCartDeleteProduct: RequestHandler<ID> = async (req, res) => {
+//   const id = req.body.id;
+//   const product = await Product.fetchById(id);
+//   await Cart.deleteFromCart(id, product.price);
+//   const cartProducts = await getCartProducts();
+//   res.json({cartProducts})
+// }
