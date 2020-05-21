@@ -76,4 +76,4 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
         }
     });
 }); };
-start();
+start().then(function () { return console.log('server started!'); });

@@ -32,5 +32,5 @@ const start = async () => {
   }
 };
 
-start();
+start().then(() => console.log('server started!'));
 

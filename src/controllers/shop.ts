@@ -2,20 +2,28 @@ import Product  from "../models/Product";
 import {RequestHandler} from 'express';
 
 type ID = {
-  id: string
+  id: any
 }
 
 export const getProducts: RequestHandler = async (req, res) => {
-  const products = await Product.find();
-  res.status(200).json({products: products});
+ try {
+   const products = await Product.find();
+   res.status(200).json({products: products});
+ } catch (e) {
+   console.log(e)
+ }
 }
 
-// export const getProductById: RequestHandler<ID> = async (req, res) => {
-//   const id = req.params.id;
-//   const product = await Product.fetchById(id);
-//   res.status(200).json({product: product});
-// }
-//
+export const getProductById: RequestHandler<ID> = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const product = await Product.findById(id);
+    res.status(200).json({product: product});
+  } catch (e) {
+    console.log(e)
+  }
+}
+
 // export const getCart: RequestHandler = async (req, res) => {
 //   const cartProducts = await getCartProducts()
 //   res.status(200).json({cartProducts});

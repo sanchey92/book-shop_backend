@@ -12,9 +12,13 @@ export const postAddProduct: RequestHandler = async (req, res) => {
   }
 }
 
-// export const deleteProductById: RequestHandler = async (req, res) => {
-//   const prodId = req.params.id;
-//   await Product.deleteById(prodId);
-//   const products: IProduct[] = await Product.fetchAll();
-//   res.status(200).json({products})
-// }
+export const deleteProductById: RequestHandler = async (req, res) => {
+  try {
+    const prodId = req.params.id;
+    await Product.findByIdAndDelete(prodId);
+    const products = await Product.find();
+    res.status(200).json({products})
+  } catch (e) {
+    console.log(e)
+  }
+}

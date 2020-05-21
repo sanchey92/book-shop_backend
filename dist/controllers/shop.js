@@ -41,23 +41,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Product_1 = __importDefault(require("../models/Product"));
 exports.getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, e_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, Product_1.default.find()];
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, Product_1.default.find()];
             case 1:
                 products = _a.sent();
                 res.status(200).json({ products: products });
-                return [2 /*return*/];
+                return [3 /*break*/, 3];
+            case 2:
+                e_1 = _a.sent();
+                console.log(e_1);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
         }
     });
 }); };
-// export const getProductById: RequestHandler<ID> = async (req, res) => {
-//   const id = req.params.id;
-//   const product = await Product.fetchById(id);
-//   res.status(200).json({product: product});
-// }
-//
+exports.getProductById = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, product, e_2;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                id = req.params.id;
+                return [4 /*yield*/, Product_1.default.findById(id)];
+            case 1:
+                product = _a.sent();
+                res.status(200).json({ product: product });
+                return [3 /*break*/, 3];
+            case 2:
+                e_2 = _a.sent();
+                console.log(e_2);
+                return [3 /*break*/, 3];
+            case 3: return [2 /*return*/];
+        }
+    });
+}); };
 // export const getCart: RequestHandler = async (req, res) => {
 //   const cartProducts = await getCartProducts()
 //   res.status(200).json({cartProducts});
