@@ -41,12 +41,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var Product_1 = __importDefault(require("../models/Product"));
 exports.postAddProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var _a, title, imgUrl, price, description, product, err_1;
+    var _a, title, imgUrl, price, description, userId, product, err_1;
     return __generator(this, function (_b) {
         switch (_b.label) {
             case 0:
                 _a = req.body, title = _a.title, imgUrl = _a.imgUrl, price = _a.price, description = _a.description;
-                product = new Product_1.default({ title: title, imgUrl: imgUrl, price: price, description: description });
+                userId = req.user;
+                product = new Product_1.default({ title: title, imgUrl: imgUrl, price: price, description: description, userId: userId });
                 _b.label = 1;
             case 1:
                 _b.trys.push([1, 3, , 4]);

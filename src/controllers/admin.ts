@@ -1,9 +1,11 @@
 import Product from "../models/Product";
 import {RequestHandler} from "express";
+import {Req} from "../app";
 
-export const postAddProduct: RequestHandler = async (req, res) => {
+export const postAddProduct: RequestHandler = async (req: Req, res) => {
   const {title, imgUrl, price, description} = req.body;
-  const product = new Product({title, imgUrl, price, description});
+  const userId = req.user;
+  const product = new Product({title, imgUrl, price, description, userId});
   try {
     await product.save();
     res.status(200).json({message: 'done!'})
