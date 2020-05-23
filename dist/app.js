@@ -59,7 +59,7 @@ app.use(function (req, res, next) { return __awaiter(void 0, void 0, void 0, fun
         switch (_a.label) {
             case 0:
                 _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, User_1.default.findById('5ec7e67bcb25cf36ff34e9a0')];
+                return [4 /*yield*/, User_1.default.findById('5ec86e23629b471a251aaa96')];
             case 1:
                 user = _a.sent();
                 req.user = user;
@@ -96,11 +96,12 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
                 user = new User_1.default({
                     name: 'Alexandr',
                     email: 'test@gmail.com',
-                    cart: { items: [] }
+                    cart: { items: [], totalPrice: 0 }
                 });
                 return [4 /*yield*/, user.save()];
             case 2:
                 _a.sent();
+                console.log(user);
                 _a.label = 3;
             case 3:
                 app.listen(3001);

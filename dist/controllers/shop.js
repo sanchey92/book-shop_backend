@@ -84,12 +84,23 @@ exports.getProductById = function (req, res) { return __awaiter(void 0, void 0, 
 //   res.status(200).json({cartProducts});
 // }
 //
-// export const postCart: RequestHandler<ID> = async (req, res) => {
-//   const product = await Product.fetchById(req.params.id)
-//   await Cart.addToCart(req.params.id, product.price)
-//   const cartProducts = await getCartProducts()
-//   res.status(200).json({cartProducts})
-// }
+exports.postCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var idx, product;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                idx = req.params.id;
+                return [4 /*yield*/, Product_1.default.findById(idx)];
+            case 1:
+                product = _a.sent();
+                return [4 /*yield*/, req.user.addToCart(product)];
+            case 2:
+                _a.sent();
+                res.json({ message: 'done' });
+                return [2 /*return*/];
+        }
+    });
+}); };
 //
 // export const postCartDeleteProduct: RequestHandler<ID> = async (req, res) => {
 //   const id = req.body.id;

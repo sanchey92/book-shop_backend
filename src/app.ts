@@ -22,7 +22,7 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 
 app.use(async (req: Req, res: Response, next: NextFunction)=> {
   try {
-    const user = await User.findById('5ec7e67bcb25cf36ff34e9a0')
+    const user = await User.findById('5ec86e23629b471a251aaa96')
     req.user = user;
     next()
   } catch (e) {
@@ -49,9 +49,10 @@ const start = async () => {
      const user = new User({
        name: 'Alexandr',
        email: 'test@gmail.com',
-       cart: {items: []}
+       cart: {items: [],totalPrice: 0}
      })
       await user.save()
+      console.log(user);
     }
     app.listen(3001);
   } catch (error) {
