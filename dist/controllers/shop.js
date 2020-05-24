@@ -40,6 +40,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var Product_1 = __importDefault(require("../models/Product"));
+var utils_1 = require("../utils/utils");
 exports.getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var products, e_1;
     return __generator(this, function (_a) {
@@ -79,16 +80,23 @@ exports.getProductById = function (req, res) { return __awaiter(void 0, void 0, 
         }
     });
 }); };
-// export const getCart: RequestHandler = async (req, res) => {
-//   const cartProducts = await getCartProducts()
-//   res.status(200).json({cartProducts});
-// }
-//
+exports.getCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    return __generator(this, function (_a) {
+        try {
+            return [2 /*return*/, utils_1.getCartProductInfo(req, res)];
+        }
+        catch (e) {
+            console.log(e);
+        }
+        return [2 /*return*/];
+    });
+}); };
 exports.postCart = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var idx, product;
+    var idx, product, e_3;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
+                _a.trys.push([0, 3, , 4]);
                 idx = req.params.id;
                 return [4 /*yield*/, Product_1.default.findById(idx)];
             case 1:
@@ -96,16 +104,34 @@ exports.postCart = function (req, res) { return __awaiter(void 0, void 0, void 0
                 return [4 /*yield*/, req.user.addToCart(product)];
             case 2:
                 _a.sent();
-                res.json({ message: 'done' });
-                return [2 /*return*/];
+                return [2 /*return*/, utils_1.getCartProductInfo(req, res)];
+            case 3:
+                e_3 = _a.sent();
+                console.log(e_3);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
-//
-// export const postCartDeleteProduct: RequestHandler<ID> = async (req, res) => {
-//   const id = req.body.id;
-//   const product = await Product.fetchById(id);
-//   await Cart.deleteFromCart(id, product.price);
-//   const cartProducts = await getCartProducts();
-//   res.json({cartProducts})
-// }
+exports.postCartDeleteProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, product, e_4;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 3, , 4]);
+                id = req.params.id;
+                return [4 /*yield*/, Product_1.default.findById(id)];
+            case 1:
+                product = _a.sent();
+                return [4 /*yield*/, req.user.removeFromCart(product)];
+            case 2:
+                _a.sent();
+                return [2 /*return*/, utils_1.getCartProductInfo(req, res)];
+            case 3:
+                e_4 = _a.sent();
+                console.log(e_4);
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };

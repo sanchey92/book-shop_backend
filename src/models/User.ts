@@ -1,5 +1,19 @@
-import {Schema, model} from "mongoose";
-import Product from "./Product";
+import {Schema, model, Document} from "mongoose";
+import Product, {IProductSchema} from "./Product";
+
+export type cartItem = {
+  productId: Schema.Types.ObjectId,
+  quantity: cartItem
+}
+
+export interface IUserSchema extends Document {
+  name: string,
+  email: string,
+  cart: {
+    items: cartItem[],
+    totalPrice: number
+  }
+}
 
 const userSchema = new Schema({
   name: {
@@ -20,7 +34,7 @@ const userSchema = new Schema({
         },
         quantity: {
           type: Number,
-          required: true
+          required: true,
         }
       }
     ],
@@ -32,24 +46,36 @@ const userSchema = new Schema({
   }
 });
 
-userSchema.methods.addToCart = function (product: any) {
-  const idx = this.cart.items.findIndex((el: any) => el.productId === product._id);
-  let newQuantity = 1;
+userSchema.methods.addToCart = function (product: IProductSchema) {
+  const idx = this.cart.items.findIndex((el: cartItem) => el.productId.toString() === product._id.toString());
+  let newQuantity = 1
   const updateCartItems = [...this.cart.items];
-
-  if (idx >= 1) {
-    newQuantity = this.cart.items[idx].quality + 1;
-    updateCartItems[idx].quality = newQuantity;
+  if (idx >= 0) {
+    newQuantity = this.cart.items[idx].quantity + 1;
+    updateCartItems[idx].quantity = newQuantity;
   } else {
     updateCartItems.push({
       productId: product._id,
-      quantity: newQuantity,
+      quantity: newQuantity
     })
   }
-
-  let newTotal = this.cart.totalPrice + product.price
+  const newTotal = this.cart.totalPrice + product.price
   this.cart = {items: updateCartItems, totalPrice: newTotal};
   return this.save()
 }
 
-export default model('User', userSchema)
+userSchema.methods.removeFromCart = function (product: IProductSchema) {
+  const idx = this.cart.items.findIndex((el: cartItem) => el.productId.toString() === product._id.toString());
+  let updatedCartItems = [...this.cart.items];
+
+  if (updatedCartItems[idx].quantity === 1) {
+    updatedCartItems = updatedCartItems.filter((el: cartItem) => el.productId.toString() !== product._id.toString())
+  } else {
+    updatedCartItems[idx].quantity--
+  }
+  let newTotal = this.cart.totalPrice - product.price;
+  this.cart = {items: updatedCartItems, totalPrice: newTotal}
+  return this.save()
+}
+
+export default model<IUserSchema>('User', userSchema)

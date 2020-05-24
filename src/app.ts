@@ -49,7 +49,7 @@ const start = async () => {
      const user = new User({
        name: 'Alexandr',
        email: 'test@gmail.com',
-       cart: {items: [],totalPrice: 0}
+       cart: {items: []}
      })
       await user.save()
       console.log(user);

@@ -96,7 +96,7 @@ var start = function () { return __awaiter(void 0, void 0, void 0, function () {
                 user = new User_1.default({
                     name: 'Alexandr',
                     email: 'test@gmail.com',
-                    cart: { items: [], totalPrice: 0 }
+                    cart: { items: [] }
                 });
                 return [4 /*yield*/, user.save()];
             case 2:

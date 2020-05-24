@@ -27,7 +27,7 @@ var userSchema = new mongoose_1.Schema({
                 },
                 quantity: {
                     type: Number,
-                    required: true
+                    required: true,
                 }
             }
         ],
@@ -39,21 +39,34 @@ var userSchema = new mongoose_1.Schema({
     }
 });
 userSchema.methods.addToCart = function (product) {
-    var idx = this.cart.items.findIndex(function (el) { return el.productId === product._id; });
+    var idx = this.cart.items.findIndex(function (el) { return el.productId.toString() === product._id.toString(); });
     var newQuantity = 1;
     var updateCartItems = __spreadArrays(this.cart.items);
-    if (idx >= 1) {
-        newQuantity = this.cart.items[idx].quality + 1;
-        updateCartItems[idx].quality = newQuantity;
+    if (idx >= 0) {
+        newQuantity = this.cart.items[idx].quantity + 1;
+        updateCartItems[idx].quantity = newQuantity;
     }
     else {
         updateCartItems.push({
             productId: product._id,
-            quantity: newQuantity,
+            quantity: newQuantity
         });
     }
     var newTotal = this.cart.totalPrice + product.price;
     this.cart = { items: updateCartItems, totalPrice: newTotal };
+    return this.save();
+};
+userSchema.methods.removeFromCart = function (product) {
+    var idx = this.cart.items.findIndex(function (el) { return el.productId.toString() === product._id.toString(); });
+    var updatedCartItems = __spreadArrays(this.cart.items);
+    if (updatedCartItems[idx].quantity === 1) {
+        updatedCartItems = updatedCartItems.filter(function (el) { return el.productId.toString() !== product._id.toString(); });
+    }
+    else {
+        updatedCartItems[idx].quantity--;
+    }
+    var newTotal = this.cart.totalPrice - product.price;
+    this.cart = { items: updatedCartItems, totalPrice: newTotal };
     return this.save();
 };
 exports.default = mongoose_1.model('User', userSchema);
