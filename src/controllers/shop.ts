@@ -66,7 +66,10 @@ export const postOrders: RequestHandler = async (req: Req, res) => {
       return {quantity: el.quantity, product: {...el.productId._doc}}
     })
     const order = new Order({user: {name: user.name, userId: user}, products, totalPrice: req.user.cart.totalPrice})
-    return order.save().then(() => user.clearCart())
+    return order
+      .save()
+      .then(() => user.clearCart())
+      .then(() => getCartProductInfo(req, res));
   } catch (e) {
     console.log(e)
   }

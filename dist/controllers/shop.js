@@ -161,7 +161,10 @@ exports.postOrders = function (req, res) { return __awaiter(void 0, void 0, void
                     return { quantity: el.quantity, product: __assign({}, el.productId._doc) };
                 });
                 order = new Order_1.default({ user: { name: user_1.name, userId: user_1 }, products: products, totalPrice: req.user.cart.totalPrice });
-                return [2 /*return*/, order.save().then(function () { return user_1.clearCart(); })];
+                return [2 /*return*/, order
+                        .save()
+                        .then(function () { return user_1.clearCart(); })
+                        .then(function () { return utils_1.getCartProductInfo(req, res); })];
             case 2:
                 e_5 = _a.sent();
                 console.log(e_5);
