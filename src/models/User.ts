@@ -78,4 +78,9 @@ userSchema.methods.removeFromCart = function (product: IProductSchema) {
   return this.save()
 }
 
+userSchema.methods.clearCart = function () {
+  this.cart = {items: [], totalPrice: 0};
+  return this.save();
+}
+
 export default model<IUserSchema>('User', userSchema)

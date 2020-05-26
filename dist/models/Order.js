@@ -6,7 +6,10 @@ var orderSchema = new mongoose_1.Schema({
             product: { type: Object, required: true },
             quantity: { type: Number, required: true }
         }],
-    user: { type: String, required: true },
-    userId: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'User' }
+    user: {
+        name: { type: String, required: true },
+        userId: { type: mongoose_1.Schema.Types.ObjectId, required: true, ref: 'User' }
+    },
+    totalPrice: { type: Number, required: true }
 });
 exports.default = mongoose_1.model('Order', orderSchema);

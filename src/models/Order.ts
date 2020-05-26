@@ -11,8 +11,11 @@ const orderSchema = new Schema({
     product: {type: Object, required: true},
     quantity:{type: Number, required: true}
   }],
-  user: {type: String, required: true},
-  userId: {type: Schema.Types.ObjectId, required: true, ref: 'User'}
+  user: {
+    name: {type: String, required: true},
+    userId: {type: Schema.Types.ObjectId, required: true, ref: 'User'}
+  },
+  totalPrice: {type: Number, required: true}
 })
 
 export default model<IOrder>('Order', orderSchema)

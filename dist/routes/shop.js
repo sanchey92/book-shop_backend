@@ -6,6 +6,8 @@ var router = express_1.Router();
 router.get('/products', shop_1.getProducts);
 router.get('/products/:id', shop_1.getProductById);
 router.get('/cart', shop_1.getCart);
+router.get('/orders', shop_1.getOrders);
+router.post('/create-order', shop_1.postOrders);
 router.post('/cart/:id', shop_1.postCart);
 router.delete('/cart/remove-product/:id', shop_1.postCartDeleteProduct);
 exports.default = router;

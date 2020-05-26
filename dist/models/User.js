@@ -69,4 +69,8 @@ userSchema.methods.removeFromCart = function (product) {
     this.cart = { items: updatedCartItems, totalPrice: newTotal };
     return this.save();
 };
+userSchema.methods.clearCart = function () {
+    this.cart = { items: [], totalPrice: 0 };
+    return this.save();
+};
 exports.default = mongoose_1.model('User', userSchema);
