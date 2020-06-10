@@ -1,6 +1,5 @@
 import Product from "../models/Product";
 import {RequestHandler} from 'express';
-import {Req} from "../app";
 import {getCartProductInfo} from "../utils/utils";
 import {cartItem} from "../models/User";
 import Order from "../models/Order";
@@ -28,7 +27,7 @@ export const getProductById: RequestHandler<ID> = async (req, res) => {
   }
 }
 
-export const getCart: RequestHandler = async (req: Req, res) => {
+export const getCart: RequestHandler = async (req, res) => {
   try {
     return getCartProductInfo(req, res);
   } catch (e) {
@@ -36,7 +35,7 @@ export const getCart: RequestHandler = async (req: Req, res) => {
   }
 }
 
-export const postCart: RequestHandler<ID> = async (req: Req, res) => {
+export const postCart: RequestHandler<ID> = async (req: any, res) => {
   try {
     const idx = req.params.id;
     const product = await Product.findById(idx)
@@ -47,7 +46,7 @@ export const postCart: RequestHandler<ID> = async (req: Req, res) => {
   }
 }
 
-export const postCartDeleteProduct: RequestHandler<ID> = async (req: Req, res) => {
+export const postCartDeleteProduct: RequestHandler<ID> = async (req: any, res) => {
   try {
     const id = req.params.id
     const product = await Product.findById(id);
@@ -58,7 +57,7 @@ export const postCartDeleteProduct: RequestHandler<ID> = async (req: Req, res) =
   }
 }
 
-export const postOrders: RequestHandler = async (req: Req, res) => {
+export const postOrders: RequestHandler = async (req: any, res) => {
   try {
     const user = await req.user.populate('cart.items.productId').execPopulate();
     const products = user.cart.items.map((el: cartItem) => {

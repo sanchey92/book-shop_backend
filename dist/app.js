@@ -42,9 +42,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var mongoose_1 = require("mongoose");
 var body_parser_1 = require("body-parser");
-var User_1 = __importDefault(require("./models/User"));
 var shop_1 = __importDefault(require("./routes/shop"));
 var admin_1 = __importDefault(require("./routes/admin"));
+var users_1 = __importDefault(require("./routes/users"));
 var app = express_1.default();
 app.use(body_parser_1.json());
 app.use(function (req, res, next) {
@@ -53,63 +53,32 @@ app.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
-app.use(function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
-    var user, e_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, User_1.default.findById('5ec86e23629b471a251aaa96')];
-            case 1:
-                user = _a.sent();
-                req.user = user;
-                next();
-                return [3 /*break*/, 3];
-            case 2:
-                e_1 = _a.sent();
-                console.log(e_1);
-                return [3 /*break*/, 3];
-            case 3: return [2 /*return*/];
-        }
-    });
-}); });
 app.use('/shop', shop_1.default);
 app.use('/admin', admin_1.default);
+app.use('/user', users_1.default);
 app.use(function (error, req, res) {
     res.status(500).json({ message: error.message });
 });
 var start = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var URL_1, candidate, user, error_1;
+    var URL_1, error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 4, , 5]);
+                _a.trys.push([0, 2, , 3]);
                 URL_1 = 'mongodb+srv://Alex:Liverpool1892@cluster0-pu5lh.mongodb.net/shop?retryWrites=true&w=majority';
                 return [4 /*yield*/, mongoose_1.connect(URL_1, {
                         useNewUrlParser: true,
-                        useUnifiedTopology: true
+                        useUnifiedTopology: true,
+                        useCreateIndex: true
                     })];
             case 1:
                 _a.sent();
-                candidate = User_1.default.findOne();
-                if (!!candidate) return [3 /*break*/, 3];
-                user = new User_1.default({
-                    name: 'Alexandr',
-                    email: 'test@gmail.com',
-                    cart: { items: [] }
-                });
-                return [4 /*yield*/, user.save()];
-            case 2:
-                _a.sent();
-                console.log(user);
-                _a.label = 3;
-            case 3:
                 app.listen(3001);
-                return [3 /*break*/, 5];
-            case 4:
+                return [3 /*break*/, 3];
+            case 2:
                 error_1 = _a.sent();
                 throw new Error(error_1);
-            case 5: return [2 /*return*/];
+            case 3: return [2 /*return*/];
         }
     });
 }); };

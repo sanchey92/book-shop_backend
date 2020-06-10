@@ -7,8 +7,8 @@ export type cartItem = {
 }
 
 export interface IUserSchema extends Document {
-  name: string,
   email: string,
+  password: string,
   cart: {
     items: cartItem[],
     totalPrice: number
@@ -16,11 +16,12 @@ export interface IUserSchema extends Document {
 }
 
 const userSchema = new Schema({
-  name: {
-    type: String,
-    required: true
-  },
   email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
     type: String,
     required: true
   },
