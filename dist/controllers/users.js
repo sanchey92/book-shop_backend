@@ -39,49 +39,63 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var mongoose_1 = require("mongoose");
-var body_parser_1 = require("body-parser");
-var shop_1 = __importDefault(require("./routes/shop"));
-var admin_1 = __importDefault(require("./routes/admin"));
-var users_1 = __importDefault(require("./routes/users"));
-var auth_middleware_1 = __importDefault(require("./middleware/auth.middleware"));
-var app = express_1.default();
-app.use(body_parser_1.json());
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-app.use('/shop', shop_1.default);
-app.use('/admin', admin_1.default);
-app.use('/user', users_1.default);
-app.use(function (error, req, res) {
-    res.status(500).json({ message: error.message });
-});
-app.use(auth_middleware_1.default);
-var start = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var URL_1, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
+var User_1 = __importDefault(require("../models/User"));
+var bcrypt_1 = __importDefault(require("bcrypt"));
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+exports.postSignUp = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, candidate, hashedPassword, user, e_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                URL_1 = 'mongodb+srv://Alex:Liverpool1892@cluster0-pu5lh.mongodb.net/shop?retryWrites=true&w=majority';
-                return [4 /*yield*/, mongoose_1.connect(URL_1, {
-                        useNewUrlParser: true,
-                        useUnifiedTopology: true,
-                        useCreateIndex: true
-                    })];
+                _b.trys.push([0, 4, , 5]);
+                _a = req.body, email = _a.email, password = _a.password;
+                return [4 /*yield*/, User_1.default.findOne({ email: email })];
             case 1:
-                _a.sent();
-                app.listen(3001);
-                return [3 /*break*/, 3];
+                candidate = _b.sent();
+                if (candidate)
+                    return [2 /*return*/, res.status(400).json({ message: 'this email already registered' })];
+                return [4 /*yield*/, bcrypt_1.default.hash(password, 12)];
             case 2:
-                error_1 = _a.sent();
-                throw new Error(error_1);
-            case 3: return [2 /*return*/];
+                hashedPassword = _b.sent();
+                user = new User_1.default({ email: email, password: hashedPassword });
+                return [4 /*yield*/, user.save()];
+            case 3:
+                _b.sent();
+                res.status(200).json({ message: 'user created!' });
+                return [3 /*break*/, 5];
+            case 4:
+                e_1 = _b.sent();
+                res.status(500).json({ message: 'try again' });
+                return [3 /*break*/, 5];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
-start().then(function () { return console.log('server started!'); });
+exports.postSignIn = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, email, password, user, isMatch, token, e_2;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 3, , 4]);
+                _a = req.body, email = _a.email, password = _a.password;
+                return [4 /*yield*/, User_1.default.findOne({ email: email })];
+            case 1:
+                user = _b.sent();
+                if (!user)
+                    return [2 /*return*/, res.status(400).json({ message: 'Error! try again!' })];
+                return [4 /*yield*/, bcrypt_1.default.compare(password, user.password)];
+            case 2:
+                isMatch = _b.sent();
+                if (!isMatch)
+                    return [2 /*return*/, res.status(400).json({ message: 'not correct data, try again!' })];
+                token = jsonwebtoken_1.default.sign({ userId: user._id }, 'secret string', { expiresIn: '1h' });
+                res.json({ token: token, userId: user._id });
+                return [3 /*break*/, 4];
+            case 3:
+                e_2 = _b.sent();
+                res.status(500).json({ message: 'Error! Try again!!!' });
+                return [3 /*break*/, 4];
+            case 4: return [2 /*return*/];
+        }
+    });
+}); };

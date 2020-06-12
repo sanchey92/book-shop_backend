@@ -4,6 +4,7 @@ import {json} from 'body-parser';
 import shopRoutes from './routes/shop';
 import adminRoutes from './routes/admin';
 import userRoutes from './routes/users'
+import auth from "./middleware/auth.middleware";
 
 
 const app = express();
@@ -23,6 +24,8 @@ app.use('/user', userRoutes);
 app.use((error: Error, req: Request, res: Response) => {
   res.status(500).json({message: error.message})
 })
+
+app.use(auth)
 
 const start = async () => {
   try {

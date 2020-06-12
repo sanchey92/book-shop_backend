@@ -39,49 +39,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = __importDefault(require("express"));
-var mongoose_1 = require("mongoose");
-var body_parser_1 = require("body-parser");
-var shop_1 = __importDefault(require("./routes/shop"));
-var admin_1 = __importDefault(require("./routes/admin"));
-var users_1 = __importDefault(require("./routes/users"));
-var auth_middleware_1 = __importDefault(require("./middleware/auth.middleware"));
-var app = express_1.default();
-app.use(body_parser_1.json());
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'OPTIONS, GET, POST, PUT, PATCH, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    next();
-});
-app.use('/shop', shop_1.default);
-app.use('/admin', admin_1.default);
-app.use('/user', users_1.default);
-app.use(function (error, req, res) {
-    res.status(500).json({ message: error.message });
-});
-app.use(auth_middleware_1.default);
-var start = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var URL_1, error_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                URL_1 = 'mongodb+srv://Alex:Liverpool1892@cluster0-pu5lh.mongodb.net/shop?retryWrites=true&w=majority';
-                return [4 /*yield*/, mongoose_1.connect(URL_1, {
-                        useNewUrlParser: true,
-                        useUnifiedTopology: true,
-                        useCreateIndex: true
-                    })];
-            case 1:
-                _a.sent();
-                app.listen(3001);
-                return [3 /*break*/, 3];
-            case 2:
-                error_1 = _a.sent();
-                throw new Error(error_1);
-            case 3: return [2 /*return*/];
+var jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+var auth = function (req, res, next) { return __awaiter(void 0, void 0, void 0, function () {
+    var token, decoded;
+    var _a;
+    return __generator(this, function (_b) {
+        try {
+            token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(' ')[1];
+            if (!token)
+                return [2 /*return*/, res.status(401).json({ message: 'error!!!' })];
+            decoded = jsonwebtoken_1.default.verify(token, 'secret string');
+            req.user = decoded;
+            next();
         }
+        catch (e) {
+            console.log(e);
+        }
+        return [2 /*return*/];
     });
 }); };
-start().then(function () { return console.log('server started!'); });
+exports.default = auth;
